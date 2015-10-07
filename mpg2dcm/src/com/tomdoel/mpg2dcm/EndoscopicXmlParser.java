@@ -34,15 +34,19 @@ public class EndoscopicXmlParser extends DefaultHandler {
     private List<String> videoFiles = null;
     private List<String> videoThumbnailFiles = null;
     private List<String> pictureFiles = null;
+    private List<String> pictureFileHints = null;
+    private List<String> pictureFileAudio = null;
     private List<String> soundFiles = null;
     private Mode mode = Mode.NONE;
 
     public void startDocument() throws SAXException {
-        map = new HashMap<>();
-        videoFiles = new ArrayList<>();
-        videoThumbnailFiles = new ArrayList<>();
-        pictureFiles = new ArrayList<>();
-        soundFiles = new ArrayList<>();
+        map = new HashMap<String, String>();
+        videoFiles = new ArrayList<String>();
+        videoThumbnailFiles = new ArrayList<String>();
+        pictureFiles = new ArrayList<String>();
+        pictureFileHints = new ArrayList<String>();
+        pictureFileAudio = new ArrayList<String>();
+        soundFiles = new ArrayList<String>();
     }
 
     public void endDocument() throws SAXException {
@@ -67,6 +71,14 @@ public class EndoscopicXmlParser extends DefaultHandler {
             } else if (currentKey.equals("Thumb")) {
                 videoThumbnailFiles.add(currentValue.toString());
             }
+        } else if (mode == Mode.IMAGES) {
+                if (currentKey.equals("File")) {
+                    pictureFiles.add(currentValue.toString());
+                } else if (currentKey.equals("Hint")) {
+                    pictureFileHints.add(currentValue.toString());
+                } else if (currentKey.equals("AUDIO")) {
+                    pictureFileAudio.add(currentValue.toString());
+                }
         } else {
             map.put(currentKey, currentValue.toString());
         }
