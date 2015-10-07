@@ -4,8 +4,24 @@
     <artifactId>mpeg2dcm</artifactId>
     <name>MPEG to DICOM converter</name>
     <description>Application for converting MPEG files to DICOM.</description>
-    <url>www.tomdoel.com</url>
+    <url>http://github.com/tomdoel/mpg2dcm</url>
     <version>1.0.0</version>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Tom Doel</name>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git@github.com:tomdoel/mpg2dcm.git</connection>
+        <developerConnection>scm:git:git@github.com:tomdoel/mpg2dcm.git</developerConnection>
+        <url>git@github.com:tomdoel/mpg2dcm.git</url>
+    </scm>
     <repositories>
     <repository>
         <id>www.dcm4che.org</id>
