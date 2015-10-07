@@ -15,6 +15,7 @@ import org.apache.commons.cli.Options;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
@@ -52,7 +53,7 @@ public class Xml2Dicom {
 
                 final String xmlInputFileName = remainingArgs.get(0);
                 final String dicomOutputPath = remainingArgs.get(1);
-                EndoscopicXmlToDicomConverter.convert(xmlInputFileName, dicomOutputPath);
+                EndoscopicXmlToDicomConverter.convert(new File(xmlInputFileName), dicomOutputPath);
             }
         } catch (org.apache.commons.cli.ParseException e) {
             e.printStackTrace();

@@ -28,9 +28,9 @@ import java.text.ParseException;
  */
 public class EndoscopicXmlToDicomConverter {
 
-    public static void convert(final String xmlInputFileName, final String dicomOutputPath) throws IOException, SAXException, ParserConfigurationException, ParseException {
+    public static void convert(final File xmlInputFile, final String dicomOutputPath) throws IOException, SAXException, ParserConfigurationException, ParseException {
         // Parse the XML file
-        final EndoscopicFileProcessor converter = new EndoscopicFileProcessor(new File(xmlInputFileName));
+        final EndoscopicFileProcessor converter = new EndoscopicFileProcessor(xmlInputFile);
 
         // Generate DICOM tags from the XML file - these will be shared across all files
         final Attributes dicomAttributes = converter.getDicomAttributes();
