@@ -22,7 +22,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Parses an XML file describing an endoscopic capture that is arranged in a structured file hierarchy
@@ -35,9 +34,9 @@ import java.util.stream.Collectors;
 public class EndoscopicFileProcessor {
 
     private final Attributes dicomAttributes;
-    private final List<File> fullVideoFileNames = new ArrayList<>();
-    private final List<File> fullPictureFileNames = new ArrayList<>();
-    private final List<File> fullSoundFileNames = new ArrayList<>();
+    private final List<File> fullVideoFileNames = new ArrayList<File>();
+    private final List<File> fullPictureFileNames = new ArrayList<File>();
+    private final List<File> fullSoundFileNames = new ArrayList<File>();
 
     /**
      * Creates the EndoscopicFileProcessor that will parse the XML file
@@ -56,9 +55,16 @@ public class EndoscopicFileProcessor {
 
         // Get full paths for each video file
         final String path = xmlFile.toPath().getParent().toString();
-        fullVideoFileNames.addAll(parser.getVideoFilenames().stream().map(videoFile -> new File(path, videoFile)).collect(Collectors.toList()));
-        fullPictureFileNames.addAll(parser.getPictureFilenames().stream().map(pictureFile -> new File(path, pictureFile)).collect(Collectors.toList()));
-        fullSoundFileNames.addAll(parser.getSoundFilenames().stream().map(soundFile -> new File(path, soundFile)).collect(Collectors.toList()));
+        for (final String fileName : parser.getVideoFilenames()) {
+            fullVideoFileNames.add(new File(path, fileName));
+        }
+        for (final String fileName : parser.getPictureFilenames()) {
+            fullPictureFileNames.add(new File(path, fileName));
+        }
+
+        for (final String fileName : parser.getSoundFilenames()) {
+            fullSoundFileNames.add(new File(path, fileName));
+        }
     }
 
     /**
