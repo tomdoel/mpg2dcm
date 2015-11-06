@@ -20,6 +20,7 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Create a DICOM file from an MPEG stream, with DICOM tags provided via an Attributes list, or specified from MPEG metadata, or both
@@ -60,7 +61,7 @@ public class DicomFileBuilder {
      * @param mpgInput a DataInputStream to the MPEG file
      * @throws IOException
      */
-    public void writeDicomFile(final File dicomOutputFile, final DataInputStream mpgInput) throws IOException {
+    public void writeDicomFile(final File dicomOutputFile, final DataInputStream mpgInput, final Optional<Integer> length) throws IOException {
 
         // Ensure that essential tags are set to default values if not already present
         setDefaultAttributes();
@@ -71,13 +72,19 @@ public class DicomFileBuilder {
             // Write out the DICOM headers
             dos.writeDataset(dicomAttributes.createFileMetaInformation(transferSyntax), dicomAttributes);
 
+            // If no length is specified, we set the length to -1 (UNDEFINED LENGTH) and then write out a sequence delimitation tag to terminate the pixel data
+            final int mpgLength = length.orElse(-1);
+
             // Write out the DICOM pixel data
-            dos.writeHeader(Tag.PixelData, VR.OB, -1);
+            dos.writeHeader(Tag.PixelData, VR.OB, mpgLength);
             int r;
             while ((r = mpgInput.read(buffer)) > 0) {
                 dos.write(buffer, 0, r);
             }
-            dos.writeHeader(Tag.SequenceDelimitationItem, null, 0);
+            // If no length is specified, we have previouslyt set the length to -1 (UNDEFINED LENGTH), so we need to write out a sequence delimitation tag to terminate the pixel data
+            if (!length.isPresent()) {
+                dos.writeHeader(Tag.SequenceDelimitationItem, null, 0);
+            }
         }
     }
 

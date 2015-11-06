@@ -11,6 +11,7 @@ package com.tomdoel.mpg2dcm;
 import org.dcm4che3.data.Attributes;
 
 import java.io.*;
+import java.util.Optional;
 
 
 /**
@@ -57,8 +58,8 @@ public class MpegFileConverter{
             // Reset the stream to start from the beginning of the file
             mpegBufferStream.reset();
 
-            // Write the
-            dicomFileBuilder.writeDicomFile(dicomOutputFile, dataInputStream);
+            // Write the Dicom file
+            dicomFileBuilder.writeDicomFile(dicomOutputFile, dataInputStream, Optional.of((int) mpegFile.length()));
         }
     }
 }
